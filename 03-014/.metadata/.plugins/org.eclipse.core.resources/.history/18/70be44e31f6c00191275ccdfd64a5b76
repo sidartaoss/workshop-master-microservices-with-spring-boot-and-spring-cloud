@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package com.in28minutes.rest.webservices.restfulwebservices;
+
+/**
+ * @author SEMPR
+ *
+ */
+// Controller
+public class HelloWorldController {
+
+	
+	// GET
+	// URI		- /hello-world
+	// method - "Hello World"
+	
+	
+}

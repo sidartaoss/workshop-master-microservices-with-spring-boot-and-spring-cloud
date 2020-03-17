@@ -1,0 +1,8 @@
+package com.in28minutes.learning.jpa.jpain10steps;
+
+import javax.persistence.Entity;
+
+@Entity
+public class Books {
+
+}

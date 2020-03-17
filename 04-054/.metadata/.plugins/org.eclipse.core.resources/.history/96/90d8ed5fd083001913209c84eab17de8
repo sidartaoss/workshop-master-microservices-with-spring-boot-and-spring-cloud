@@ -1,0 +1,26 @@
+package com.in28minutes.learning.jpa.jpain10steps;
+
+public class User {
+	private Long id;
+	private String name;
+	private String role;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", role=" + role + "]";
+	}
+	
+	
+}

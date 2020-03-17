@@ -1,0 +1,7 @@
+package com.in28minutes.learning.jpa.jpain10steps;
+
+public class User {
+	private Long id;
+	private String name;
+	private String role;
+}

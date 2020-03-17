@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
+<fullyQualifiedTypeName name="com.in28minutes.learning.jpa.jpain10steps.entity.User"/>
+<fullyQualifiedTypeName name="com.in28minutes.learning.jpa.jpain10steps.service.UserRepository"/>
+</qualifiedTypeNameHistroy>

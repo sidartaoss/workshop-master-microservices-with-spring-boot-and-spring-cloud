@@ -1,0 +1,379 @@
+<!-- 
+
+	Aula 03.014. Step 12 - Implementing Generic Exception Handling for all Resources
+	
+1. In the previous step we saw that when we executed the request to a non-existing User we were getting a 404 Not Found. But the specific structure which is defined by default by Spring MVC. 
+
+2. As we discussed earlier in an organization you would to define a standard structure.
+
+3. So let's say you have some standard structure designed in your organization.
+
+4. And how do we adhre to that?
+
+5. How do we create error responses in that specific structure?
+
+6. That's basically what we would look at in this specific step.
+
+7. Customizing the exception handling to a structure that is defined by us, go ahead an create a simple structure.
+
+{
+    "timestamp": "2019-05-04T23:09:54.465+0000",
+    "status": 404,
+    "error": "Not Found",
+    "message": "id-500",
+    "path": "/users/500"
+}	
+
+8. So I would want to have a new class and I'll call this Exception..., I can call this ExceptionDetails, ExceptionResponse or whatever I would want to.
+
+9. So I'll just call this ExceptionResponse.
+
+10. Actually I would want to create it in the package .exception and move it to that package.
+
+11. In the ExceptionResponse, we can create any custom structure.
+
+package com.in28minutes.rest.webservices.restfulwebservices.exception;
+
+public class ExceptionResponse {
+
+
+
+}
+
+12. At the basic level I mean at the most basic level the important things that you would need to have are - first would be a Timestamp indicating when the Exception happened,
+
+package com.in28minutes.rest.webservices.restfulwebservices.exception;
+
+public class ExceptionResponse {
+
+	// Timestamp
+	
+
+}
+
+
+13. Then probably you would want to have some Exception message and some detail.
+
+package com.in28minutes.rest.webservices.restfulwebservices.exception;
+
+public class ExceptionResponse {
+
+	// Timestamp
+	
+	// message
+	
+	// detail
+	
+
+}
+
+
+14. So let's create simple elements for them.
+
+package com.in28minutes.rest.webservices.restfulwebservices.exception;
+
+public class ExceptionResponse {
+
+	private Date timestamp;
+	private String message;
+	private String details;
+
+}
+
+15. I'll import java.util.Date. Okay, that's a very basic structure.
+
+16. And let's quickly add in the basic Constructor.
+
+17. So right click Source / Generate Constructor Using Fields... That's cool.
+
+18. I have a Constructor. 
+
+19. And I'll also generate Getters and Setters. I'll say Select Getters. Setters are not really needed. I just created the Getters.
+
+20. So what we have created is a simple exception Response bean.
+
+21.  We have a Date String and String.
+
+22. timestamp message and details.
+
+23. There's a simple constructor and a few getters also in there.
+
+24. Now what we want to do is when an exception happens I would want to return the exception in this format.
+
+	private Date timestamp;
+	private String message;
+	private String details;
+	
+25. So instead of the message we were getting earlier timestamp status error message path I would wanto to create a message of this structure. timestamp message and details.
+
+26. At a later point in time you can actually enhance this to meet the standards of your organization.
+
+27. So names of these variables might be different.
+
+28. So instead of calling it a timestamp, maybe you'd call it something else.
+
+29. Instead of calling this message or details you might be calling it something else.
+
+30. But you can easily customize it to whatever your needs are.
+
+31. The most important thing is this exception response should be something that should be standard accross your organization.
+
+32. Not just your project I would even think a level above and make it a standard accross almost all services in your organization so that everybody can use this structure.
+
+33. The structure is the most important part and the structure has to be language independent because you are creating a Java service, you are creating a Java resource. There might be other resources which are exposed from let's say NodeJS or .NET or whatever it is.
+
+34. Once the structure is defined you can provide the Java implementation for it.
+
+35. What we want to do is whenever an exception happens we would want to return a response back in this specific format,
+
+	private Date timestamp;
+	private String message;
+	private String details;
+	
+36. How can we do that?
+
+37. One of the important things which is present in Spring is ResponseEntityExceptionHandler.
+
+38. This is basically an abstract class which can be extended to provide centralized exception handling accross all the different exception handler methods.
+
+39. So this one I can use as the base class to provide some default exception handling for all our requests.
+
+40. What we'll do is we'll extend this class. So we'll extend this and provide a customized exception handling functionality.
+
+41. So let's create a new class.
+
+42. Again I'll go to the package exception and create a new class.
+
+43. I would want to call this customized response entity exception handler.
+
+44.
+
+package com.in28minutes.rest.webservices.restfulwebservices.exception;
+
+public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+
+
+}
+
+45. Actually you can put your organization name or whatever you'd want as the name here.
+
+46. That would make it even more specific.
+
+47. But for now I'll just keep it simple.
+
+48. I'd want to extend the default exception handling which is provided by Spring in ResponseEntityExceptionHandler.
+
+49. The other thing is this Exception Handling I would want it to apply to all Controllers.
+
+50. There might be a number of Controllers that are defined right?
+
+51. So there is a HelloWorldController there is a UserResource.
+
+52. One of the things you need to understand is we are calling this UserResource because we're exposing it as a resource.
+
+53. Some projects some people might even call this UserController.
+
+54. So instead of UserResource, this might be a UserController as well.
+
+55. So a Controller or Resource I'm trying to be more specific to say this is a Resource which is being exposed but you can still call it a UserController.
+
+56. Controller is something which we follow from the MVC Model View Controller pattern.
+
+57. So this is exactly doing something similar.
+
+58. This is specifically exposing resources.
+
+59. So I call it UserResource you can also call it UserController.
+
+60. It doesn't really matter.
+
+61. The most important thing is to remain consistent.
+
+62. So once you call this UserResource I'm going to call everything else as Resource as well.
+
+63. First thing we need to do is we need to call it a RestController because this is providing a Response back.
+
+64. In case of exceptions that's what it does, @RestController.
+
+@RestController
+public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+
+
+}
+
+65. And the other thing is I would want this to be applicable accross all the other Controllers.
+
+66. How can I do that?
+
+67. It can be done by using another Spring annotation called ControllerAdvice
+
+@ControllerAdvice
+@RestController
+public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+
+
+}
+
+68. I am importing ControllerAdvice here.
+
+69. So if you look at the ControllerAdvice, it says specialization of the Component for classes that declare methods to be shared accross multiple controllers classes.
+
+70. So when we have multiple controller classes and we would want to share things accross them, then we would use this thing called ControllerAdvice.
+
+71. Using a ControllerAdvice the typical things which are defined are Exception Handling. That's what we are defining right now.
+
+72. The other things which can be defined is how do you handle dates. That's defined by using InitBinder for example.
+
+73. And also the other things which can be defined are common model attributes [@link ModelAttribute] that you would want to use accross controllers.
+
+74. In all these scenarios we would use a ControllerAdvice.
+
+75. We have defined the ControllerAdvice annotation, we have made it a RestController. Now I would want to go ahead. So ResponseEntityExceptionHandler. If you go further down here at ResponseEntityExceptionHandler, there is a specific syntax that you would need to provide to override things in here.
+
+76. So there is a default thing that is provided by ResponseEntityExceptionHandler we want to override that for specific exceptions.
+
+77. So what I'll do is I'll copy this method from here so I'll say public final ResponseEntity<Object> handleException(Exception ex, WebRequest request)
+
+78. Now I want to override this for a specific exception. So whenever some exception happens I would want to say, @ExceptionHanlder, what kind of exception does this handle?
+
+	@ExceptionHandler()
+	public final ResponseEntity<Object> handleException(Exception ex, WebRequest request) {
+	
+		
+	
+	}
+	
+79. I would want for now to handle all the exceptions.
+
+	
+	@ExceptionHandler(Exception.class)
+	public final ResponseEntity<Object> handleException(Exception ex, WebRequest request) {
+	
+		
+	
+	}
+
+
+80. So Exception.class. I can import the ExceptionHandler in. And I'll rename the method. I'll call this handleAllExceptions. Right now we are not returning anything back.
+
+81. What we want to do is when an Exception happens we want to create a new instance of our specific bean.
+
+82. So what we want to create is... we create a bean called ExceptionResponse, right? So, we want to return our specific thing back. We want to return a ExceptionResponse back.
+
+83. And to create an ExceptionResponse, first thing I'd need to have is the date.
+
+84. So I'll just for now say new Date().
+
+85. I'll import java.util.Date.
+
+86. The next thing I would need to send in is the message.
+
+87. So I'll get that from the Exception.
+
+88. I'll say exception.getMessage()
+
+89. I can... I need to add in a few more details.
+
+90. Any details that you would want to add in for that specific exception you can add.
+
+91. You have to be sensitive about security when you are sending any response back and in the detail you need to think about whay you would want to send. For now I would send something called request.getDescription() and I wouldn't include the client info as well,
+
+	new EntityResponse(new Date(), ex.getMessage(), request.getDescription(false))
+
+92. This has to be evaluated on case by case basis to see if you'd want to really include this description as part of your response.
+
+93. But for now let's just create this.
+
+94. I would actually take this into a variable. So ExceptionResponse exceptionResponse is equal to new ExceptionResponse.
+
+95. That's cool. It's perfect. Format this a little bit. Now we have the ExceptionResponse.	Now I would want to create a ResponseEntity object.
+
+96. So how do I create a new ResponseEntity object?
+
+97. ResponseEntity object, I would pass in the ExceptionResponse. That's one of the parameters that's input to it.
+
+	@ExceptionHandler(Exception.class)
+	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+		ExceptionResponse exceptionResponse = new EntityResponse(new Date(), ex.getMessage(), request.getDescription(false));
+		
+		new ResponseEntity(exceptionResponse
+	}
+
+98. And the next thing you would need to send in is the HTTP status. HttpStatus., I'll give a status of InternalServerError for now. So for all exceptions this is the status that is being returned back right now.
+
+99. We will quickly override this with specific exceptions.
+
+100. That's cool, right?
+
+
+@ControllerAdvice
+@RestController
+public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+	@ExceptionHandler(Exception.class)
+	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+	
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date, ex.getMessage(), request.getDescription(false));
+		
+		return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+	
+	}
+
+}
+
+101. So now we have defined a default exception handling for all the things which would return an Internal Server Error back and we're creating an ExceptionResponse object in our structure.
+
+102. Let's wait for the Server to pick up this change up.
+
+103. And now I would execute the Request.
+
+104. So if you see that when I get... execute the Request for 500 it says INTERNAL_SERVER_ERROR, timestamp is this, message is this, details is this. So we are getting the message back in our format but we're going back to the earlier thing of 500 Internal Server Error.
+
+105. For all exceptions we would want to return Internal Server Error but we would want to customize if for specific exceptions to return a different status back. For exception class, it's OK to return Internal Server Error. But let's say for User Not Found exception I can customize it. So I can say handleUserNotFoundException. I'm just copying the earlier method, renaming a few things.
+
+106. ... and this instead of Exception I'll call this UserNotFoundException,
+
+	@ExceptionHandler(UserNotFoundException.class)
+	public final ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
+	
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+		
+		return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
+		
+	}
+
+107. And now I can go ahead and customize the exception status that's returned, HttpStatus.NOT_FOUND
+
+108. And now when I execute the request, you'd see that I'm getting a 404 Not Found and with a specific structure that we're using for our specific thing.
+
+109. At a high level the most important things that you would want to understand is the fact that having a customized message structure accross the organization is very important.
+
+110. You need to have some class of this kind, i.e., CustomizedResponseEntityExceptionHandler, trying to define what is the status that you would want to return back to for different kinds of exceptions.
+
+111. Probably you can create a simple jar with the ExceptionResponses that you'd want to give for the common ones.
+
+112. What we have looked at is differente options that are present in Spring MVC to customize how you return the exception object back.
+
+113. Actually you might not even need to create this entity exception handler if the default structure which is provided by Spring MVC is good enough for you.
+
+114. But if you want to customize it then you can create a customized ResponseEntityHandler where you can actually go ahead and customize how you would want your exception responses to look like and what kind of HTTP response status you'd want to return back.
+
+115. Until the next step bye-bye.
+
+116. End of 	Aula 03.014. Step 12 - Implementing Generic Exception Handling for all Resources
+
+
+
+
+
+
+
+
+
+
+
+
+-->

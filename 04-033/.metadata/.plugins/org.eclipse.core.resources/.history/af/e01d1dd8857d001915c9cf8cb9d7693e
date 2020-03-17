@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package com.in28minutes.microservices.currencyconversionservice;
+
+/**
+ * @author SEMPR
+ *
+ */
+public interface CurrencyExchangeServiceProxy {
+
+}

@@ -1,0 +1,17 @@
+package com.in28minutes.learning.jpa.jpain10steps;
+
+import javax.persistence.EntityManager;
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class UserDAOService {
+	
+	private EntityManager entityManager;
+	
+	public long insert(User user) {
+		this.entityManager.persist(user);
+		return user.getId();
+	}
+
+}

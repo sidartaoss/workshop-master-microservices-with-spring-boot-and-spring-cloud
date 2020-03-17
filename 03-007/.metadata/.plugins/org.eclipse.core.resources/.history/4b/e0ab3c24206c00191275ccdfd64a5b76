@@ -1,0 +1,25 @@
+/**
+ * 
+ */
+package com.in28minutes.rest.webservices.restfulwebservices;
+
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * @author SEMPR
+ *
+ */
+// Controller
+@RestController
+public class HelloWorldController {
+
+	
+	// GET
+	// URI		- /hello-world
+	// method - "Hello World"
+
+	public String helloWorld() {
+		return "Hello World";
+	}
+	
+}
